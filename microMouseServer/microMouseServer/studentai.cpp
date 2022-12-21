@@ -1,10 +1,18 @@
 
 #include "micromouseserver.h"
 
+#define ISLANDED (1) /*0 if unislanded, 1 if islanded.*/
+
+#if ISLANDED
 static int t_time = 0;
 static int r_coord = 0;
 static int x_coord = 0;
 static int y_coord = 0;
+
+#endif
+
+static int r_count = 0;
+
 
 
 void microMouseServer::studentAI()
@@ -27,23 +35,50 @@ void microMouseServer::studentAI()
  * void foundFinish();
  * void printUI(const char *mesg);
 */
-t_time++;
+#if ISLANDED
+    t_time++;
+#endif
+if (r_count == 3 && !isWallLeft())
+{
+    foundFinish();
+}
+else if (r_count == 3 && isWallLeft())
+{
+    r_count = 0;
+}
+else
+{
 if (!isWallRight())
 {
     turnRight();
+    r_count = 0;
+   #if ISLANDED
     r_coord++;
+   #endif
 }
+
 
 if (isWallForward())
 {
     turnLeft();
+    if (!isWallLeft())
+    {
+        r_count++;
+    }
+    else
+    {
+        r_count = 0;
+    }
+
+   #if ISLANDED
     r_coord--;
+    #endif
 }
 
 if (!isWallForward())
 {
     moveForward();
-
+    #if ISLANDED
     if (r_coord%4 == 0)
         y_coord++;
     else if (r_coord%4 == 1)
@@ -52,9 +87,17 @@ if (!isWallForward())
         y_coord--;
     else if (r_coord%4 == 3)
         x_coord--;
+    #endif
+}
+#if ISLANDED
+{
+    char mesg[200];
+    sprintf(mesg,"t=%d,r=%d, x=%d, y=%d", t_time, r_coord, x_coord, y_coord);
+    printUI(mesg);
 }
 
-
+#endif
+}
 
 
 }
