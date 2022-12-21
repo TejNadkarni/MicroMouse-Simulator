@@ -1,6 +1,12 @@
 
 #include "micromouseserver.h"
 
+static int t_time = 0;
+static int r_coord = 0;
+static int x_coord = 0;
+static int y_coord = 0;
+
+
 void microMouseServer::studentAI()
 {
 /*
@@ -21,5 +27,34 @@ void microMouseServer::studentAI()
  * void foundFinish();
  * void printUI(const char *mesg);
 */
+t_time++;
+if (!isWallRight())
+{
+    turnRight();
+    r_coord++;
+}
+
+if (isWallForward())
+{
+    turnLeft();
+    r_coord--;
+}
+
+if (!isWallForward())
+{
+    moveForward();
+
+    if (r_coord%4 == 0)
+        y_coord++;
+    else if (r_coord%4 == 1)
+        x_coord++;
+    else if (r_coord%4 == 2)
+        y_coord--;
+    else if (r_coord%4 == 3)
+        x_coord--;
+}
+
+
+
 
 }
