@@ -1,7 +1,7 @@
 
 #include "micromouseserver.h"
 
-#define ISLANDED (1) /*0 if unislanded, 1 if islanded.*/
+#define ISLANDED (0) /*0 if unislanded, 1 if islanded.*/
 
 #if ISLANDED
 static int t_time = 0;
@@ -89,14 +89,7 @@ if (!isWallForward())
         x_coord--;
     #endif
 }
-#if ISLANDED
-{
-    char mesg[200];
-    sprintf(mesg,"t=%d,r=%d, x=%d, y=%d", t_time, r_coord, x_coord, y_coord);
-    printUI(mesg);
-}
 
-#endif
 }
 
 
