@@ -48,6 +48,7 @@ private:
     bool isWallLeft();
     bool isWallRight();
     bool isWallForward();
+    bool isWallBackward();
     bool moveForward();
     void turnLeft();
     void turnRight();
