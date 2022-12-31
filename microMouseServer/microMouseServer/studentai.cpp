@@ -1,22 +1,4 @@
 
-#include "micromouseserver.h"
-
-#define ISLANDED (0) /*0 if unislanded, 1 if islanded.*/
-
-#if ISLANDED
-static int t_time = 0;
-static int r_coord = 0;
-static int x_coord = 0;
-static int y_coord = 0;
-
-#endif
-
-static int r_count = 0;
-
-static int forward_count = 0;
-
-void microMouseServer::studentAI()
-{
 
 /*
  * The following are the eight functions that you can call. Feel free to create your own fuctions as well.
@@ -36,14 +18,36 @@ void microMouseServer::studentAI()
  * void foundFinish();
  * void printUI(const char *mesg);
 */
-#if ISLANDED
-    t_time++;
-#endif
-if (r_count == 3 && !isWallLeft() && !isWallBackward())
+
+
+
+
+
+#include "micromouseserver.h"
+
+
+static int r_count = 0;
+/* The r_count variable measures the number of consecutive left turns. */
+
+static int forward_count = 0;
+/* The forward_count variable counts the number of consecutive forward steps. */
+
+
+void microMouseServer::studentAI()
+{
+
+
+if (r_count == 3 && !isWallLeft())
+/* The Pac-Man will turn left 3 times when it is in the final 2x2 box. */
+
 {
     foundFinish();
 }
 else if (r_count == 3 && isWallLeft())
+/* If the Pac-Man turns left three times,
+* but there is a wall in the middle of the 2x2 square,
+* then the ending conditions are not satisfied. */
+
 {
     r_count = 0;
 }
@@ -51,21 +55,29 @@ else if (r_count == 3 && isWallLeft())
 else
 {
 if (!isWallRight())
+/* We want the Pac-Man to turn right whenever possible. */
+
 {
     turnRight();
     forward_count = 0;
     r_count = 0;
-   #if ISLANDED
-    r_coord++;
-   #endif
 }
+/* A right turn interrupts the r_count and the forward_count. */
 
 
 if (isWallForward())
+/* If the Pac-Man can't move forward or right,
+* we want it to turn left. */
+
 {
     turnLeft();
 
     if (!isWallLeft() && forward_count < 2)
+/* If the Pac-Man is in the final 2x2 square,
+* then it will not consecutively move_Forward without being interrupted by a left turn.
+* The forward_count is necessary because otherwise a leftward spiral would trigger r_count == 3.
+*/
+
     {
         r_count++;
     }
@@ -74,27 +86,15 @@ if (isWallForward())
         r_count = 0;
     }
     forward_count = 0;
-   #if ISLANDED
-    r_coord--;
-    #endif
+
 }
 
 if (!isWallForward())
+/* We want the Pac-Man to move forward whenever possible. */
+
 {
     moveForward();
     forward_count++;
-
-
-    #if ISLANDED
-    if (r_coord%4 == 0)
-        y_coord++;
-    else if (r_coord%4 == 1)
-        x_coord++;
-    else if (r_coord%4 == 2)
-        y_coord--;
-    else if (r_coord%4 == 3)
-        x_coord--;
-    #endif
 }
 
 }

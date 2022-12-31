@@ -379,27 +379,6 @@ bool microMouseServer::isWallForward()
     return true;
 }
 
-bool microMouseServer::isWallBackward()
-{
-    baseMapNode *mover = &this->mazeData[this->maze->mouseX()-1][this->maze->mouseY()-1];
-    switch (this->maze->mouseDir()) {
-    case dUP:
-        return mover->isWallBottom();
-        break;
-    case dDOWN:
-        return mover->isWallTop();
-        break;
-    case dLEFT:
-        return mover->isWallRight();
-        break;
-    case dRIGHT:
-        return mover->isWallLeft();
-        break;
-    }
-
-    return true;
-}
-
 bool microMouseServer::isWallLeft()
 {
     baseMapNode *mover = &this->mazeData[this->maze->mouseX()-1][this->maze->mouseY()-1];
